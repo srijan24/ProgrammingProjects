@@ -14,4 +14,5 @@ print(f"After ('x', 8) = {out2}:\n{b}")
 
 out3 = b.update_board('x', 2)
 print(f"After ('x', 2) = {out3}:\n{b}")
+print(b.won_game)
 

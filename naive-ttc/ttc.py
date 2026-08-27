@@ -43,8 +43,8 @@ class Board:
                     l.append((w-ite, h+ite))
             rdiags.append(r)
             ldiags.append(l)
-        ldiags = [(self.state[h*self.BOARD_WIDTH+w] for (w,h) in l) for l in ldiags]
-        rdiags = [(self.state[h*self.BOARD_WIDTH+w] for (w,h) in r) for r in rdiags]
+        ldiags = [tuple(self.state[h*self.BOARD_WIDTH+w] for (w,h) in l) for l in ldiags]
+        rdiags = [tuple(self.state[h*self.BOARD_WIDTH+w] for (w,h) in r) for r in rdiags]
         
         cols = [tuple(self.state[h::self.BOARD_WIDTH]) for h in range(self.BOARD_HEIGHT)]
         rows = [tuple(self.state[h*self.BOARD_WIDTH:(h+1)*self.BOARD_WIDTH:]) for h in range(self.BOARD_HEIGHT) ]
@@ -54,9 +54,12 @@ class Board:
         #print(rdiags)
         #print(ldiags)
 
-        for dag in [rows, cols, rdiags, ldiags]:
+        for dag in [*rows, *cols, *rdiags, *ldiags]:
             for symb in self.GAME_SYMBOLS:
-                if (symb)*self.WIN_LEN in dag:
+                #print((symb)*self.WIN_LEN)
+                #print(dag)
+                #print()
+                if tuple(symb*self.WIN_LEN) == dag: 
                     return symb
 
         return None
