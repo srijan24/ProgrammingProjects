@@ -1,4 +1,5 @@
 from typing import Any
+import helpers
 
 class AIChoices():
     def __init__(self, given: Any, choices: Any):
@@ -7,12 +8,12 @@ class AIChoices():
         NotImplementedError("AI not yet developed")
 
 class Board:
-    BOARD_HEIGHT = 3
-    BOARD_WIDTH = 3
-    WIN_LEN = 3
+    BOARD_HEIGHT = 5
+    BOARD_WIDTH = 5
+    WIN_LEN = 4
     N_PLAYER = 2
     AI_PLAYER = 0
-    GAME_SYMBOLS = ['x', 'o']
+    GAME_SYMBOLS = 'xo#@!%$&?ABCDEFGHIJKLMNOPQRS'
 
     @property
     def PLAYERS(self):
@@ -53,7 +54,7 @@ class Board:
     def won_game(self) -> str | None:
         for dag in self.winning_lines:
             for symb in self.GAME_SYMBOLS:
-                if tuple(symb*self.WIN_LEN) == dag: 
+                if helpers.sub_tuple(tuple(symb*self.WIN_LEN), dag): 
                     return symb
         return None
 
@@ -106,6 +107,29 @@ class Game:
 
 
 
+
+
+if __name__ == "__main__":
+
+
+    b = Board()
+    b.won_game
+    print(b)
+
+    print(f"Initial State:\n{b}")
+    out1 = b.update('x', 2, 1)
+
+    print(f"After ('x', 2, 1) = {out1}:\n{b}")
+    out2 = b.update('x', 8)
+
+    print(f"After ('x', 8) = {out2}:\n{b}")
+
+    out3 = b.update('x', 2)
+    print(f"After ('x', 2) = {out3}:\n{b}")
+    print(b.won_game)
+
+
+    print(b.winning_lines)
 
 
 

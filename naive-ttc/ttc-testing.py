@@ -1,6 +1,5 @@
-import ttc
 
-b = ttc.Board()
+b = Board()
 b.won_game
 print(b)
 
@@ -17,7 +16,7 @@ print(f"After ('x', 2) = {out3}:\n{b}")
 print(b.won_game)
 
 
-
+print(b.winning_lines)
 
 
 

@@ -2,7 +2,6 @@
 import ttc
 
 nplayers = int(input("Enter number of players: "))
-
 game = ttc.Game(nplayers)
 won = None
 while not won:
