@@ -1,8 +1,5 @@
 from typing import Any
 
-
-
-
 class AIChoices():
     def __init__(self, given: Any, choices: Any):
         self.given = given
@@ -10,7 +7,6 @@ class AIChoices():
         NotImplementedError("AI not yet developed")
 
 class Board:
-    
     BOARD_HEIGHT = 3
     BOARD_WIDTH = 3
     WIN_LEN = 3
@@ -27,7 +23,7 @@ class Board:
         return self.BOARD_HEIGHT * self.BOARD_WIDTH
 
     @property
-    def won_game(self) -> str | None:
+    def winning_lines(self):
         start_poses = [(w, 0) for w in range(1, self.BOARD_WIDTH)] + [(0, h) for h in range(1, self.BOARD_HEIGHT)] 
         start_poses += [(w, self.BOARD_HEIGHT-1) for w in range(self.BOARD_WIDTH-1)]  
         start_poses += [(self.BOARD_WIDTH-1, h) for h in range(self.BOARD_HEIGHT-1)]
@@ -49,23 +45,17 @@ class Board:
         cols = [tuple(self.state[h::self.BOARD_WIDTH]) for h in range(self.BOARD_HEIGHT)]
         rows = [tuple(self.state[h*self.BOARD_WIDTH:(h+1)*self.BOARD_WIDTH:]) for h in range(self.BOARD_HEIGHT) ]
 
-        #print(rows)
-        #print(cols)
-        #print(rdiags)
-        #print(ldiags)
+        return [*ldiags, *rdiags, *cols, *rows]
 
-        for dag in [*rows, *cols, *rdiags, *ldiags]:
+       
+
+    @property
+    def won_game(self) -> str | None:
+        for dag in self.winning_lines:
             for symb in self.GAME_SYMBOLS:
-                #print((symb)*self.WIN_LEN)
-                #print(dag)
-                #print()
                 if tuple(symb*self.WIN_LEN) == dag: 
                     return symb
-
         return None
-
-
-
 
     def __init__(self, state: list[str] | None = None):
         
@@ -81,13 +71,48 @@ class Board:
         return self.__repr__()
 
     
-    def update_board(self, sym: str, w: int, h: int | None = None) -> None | str:
+    def update(self, sym: str, w: int, h: int | None = None) -> None | str:
         if h is None:
             self.state[w] = sym
         else:
             self.state[h*self.BOARD_WIDTH + w] = sym
 
         return self.won_game
+
+
+
+class Game:
+ 
+    @property
+    def next_player(self):
+         return self.board.GAME_SYMBOLS[self.turns % self.nplayers]
+
+    def __init__(self, nplayers: int = 2):
+         self.board = Board()
+         self.turns = 0
+         self.nplayers = nplayers
+
+    def turn(self, *pos) -> None | str:
+        p = self.next_player
+        o = self.board.update(p, *pos)
+        if o:
+            return f"Player {o} won!"
+        elif self.turns >= self.board.BOARD_LENGTH:
+            return f"Draw, none of the {self.nplayers} player(s) won!"
+        self.turns += 1
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
