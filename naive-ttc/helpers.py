@@ -36,7 +36,7 @@ def sub_tuple(sub: tuple, main: tuple) -> bool:
         prime *= prime*C_PRIME
 
     print(f"Sub: {sub} represented by: {sub_rep}")
-    
+
     # checking for representation
     rep = 0
     prime = 1
@@ -60,11 +60,11 @@ def sub_tuple(sub: tuple, main: tuple) -> bool:
 if __name__ == "__main__":
     # testing hash
     cases = [
-        ("hash1", "hash2", False),
-        ("h1", "1h", False),
-        ("12abc", "12abc", True),
-        ]
-    print(f"Hash maker")
+            ("hash1", "hash2", False),
+            ("h1", "1h", False),
+            ("12abc", "12abc", True),
+            ]
+    print("Hash maker")
     for s1, s2, v in cases:
         h1 = hash_str(s1)
         h2 = hash_str(s2)
@@ -76,17 +76,17 @@ if __name__ == "__main__":
     # testing sub tuple
     main_tup = (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15)
     cases = [
-        ((50,51,52), 0),
-        ((1,3,5,7), 0),
-        ((3,2,1), 0),
-        ((8,6,5), 0),
-        ((9,10,11), 1),
-        ]
+            ((50,51,52), 0),
+            ((1,3,5,7), 0),
+            ((3,2,1), 0),
+            ((8,6,5), 0),
+            ((9,10,11), 1),
+            ]
     print(f"Main Tup: {main_tup}")
     for k,v in cases:
         o = sub_tuple(k, main_tup)
         print(f"Case: {k} gave: {o} expected: {v}")
-    
-    
-    
+
+
+
 

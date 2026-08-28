@@ -1,11 +1,13 @@
 from typing import Any
+
 import helpers
 
-class AIChoices():
+
+class AIChoices:
     def __init__(self, given: Any, choices: Any):
         self.given = given
         self.choices = choices
-        NotImplementedError("AI not yet developed")
+        raise NotImplementedError("AI not yet developed")
 
 class Board:
     BOARD_HEIGHT = 5
@@ -42,13 +44,13 @@ class Board:
             ldiags.append(l)
         ldiags = [tuple(self.state[h*self.BOARD_WIDTH+w] for (w,h) in l) for l in ldiags]
         rdiags = [tuple(self.state[h*self.BOARD_WIDTH+w] for (w,h) in r) for r in rdiags]
-        
+
         cols = [tuple(self.state[h::self.BOARD_WIDTH]) for h in range(self.BOARD_HEIGHT)]
         rows = [tuple(self.state[h*self.BOARD_WIDTH:(h+1)*self.BOARD_WIDTH:]) for h in range(self.BOARD_HEIGHT) ]
 
         return [*ldiags, *rdiags, *cols, *rows]
 
-       
+
 
     @property
     def won_game(self) -> str | None:
@@ -59,7 +61,7 @@ class Board:
         return None
 
     def __init__(self, state: list[str] | None = None):
-        
+
         if state is None:
             self.state = [_ for _ in range(self.BOARD_LENGTH)]
         else:
@@ -71,7 +73,7 @@ class Board:
     def __str__(self):
         return self.__repr__()
 
-    
+
     def update(self, sym: str, w: int, h: int | None = None) -> None | str:
         if h is None:
             self.state[w] = sym
@@ -83,15 +85,15 @@ class Board:
 
 
 class Game:
- 
+
     @property
     def next_player(self):
-         return self.board.GAME_SYMBOLS[self.turns % self.nplayers]
+        return self.board.GAME_SYMBOLS[self.turns % self.nplayers]
 
     def __init__(self, nplayers: int = 2):
-         self.board = Board()
-         self.turns = 0
-         self.nplayers = nplayers
+        self.board = Board()
+        self.turns = 0
+        self.nplayers = nplayers
 
     def turn(self, *pos) -> None | str:
         p = self.next_player
