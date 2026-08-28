@@ -6,7 +6,6 @@
 
 ## Planned Tasks
 
-- TODO Fix `sub_tuple` implementation
 - TODO Fix `.winning_lines` property generation for variable board lengths
 - TODO Add Random AI
 - TODO Add Learning AI
