@@ -4,16 +4,11 @@ import helpers
 
 
 class Board:
+
     BOARD_HEIGHT = 5
     BOARD_WIDTH = 5
     WIN_LEN = 4
-    N_PLAYER = 2
-    AI_PLAYER = 0
     GAME_SYMBOLS = "xo#@!%$&?ABCDEFGHIJKLMNOPQRS"
-
-    @property
-    def PLAYERS(self):
-        return self.N_PLAYER + self.AI_PLAYER
 
     @property
     def BOARD_LENGTH(self):
@@ -22,8 +17,8 @@ class Board:
     @property
     def winning_lines(self):
         start_poses = [(w, 0) for w in range(1, self.BOARD_WIDTH)] + [
-            (0, h) for h in range(1, self.BOARD_HEIGHT)
-        ]
+                (0, h) for h in range(1, self.BOARD_HEIGHT)
+                ]
         start_poses += [(w, self.BOARD_HEIGHT - 1) for w in range(self.BOARD_WIDTH - 1)]
         start_poses += [(self.BOARD_WIDTH - 1, h) for h in range(self.BOARD_HEIGHT - 1)]
         start_poses += [(0, 0), (self.BOARD_WIDTH - 1, self.BOARD_HEIGHT - 1)]
@@ -33,29 +28,29 @@ class Board:
             r, l = [], []
             for ite in range(max(self.BOARD_HEIGHT, self.BOARD_WIDTH)):
                 if (0 <= (w + ite) < self.BOARD_WIDTH) and (
-                    0 <= (h + ite) < self.BOARD_HEIGHT
-                ):
+                        0 <= (h + ite) < self.BOARD_HEIGHT
+                        ):
                     r.append((w + ite, h + ite))
                 if (0 <= (w - ite) < self.BOARD_WIDTH) and (
-                    0 <= (h + ite) < self.BOARD_HEIGHT
-                ):
+                        0 <= (h + ite) < self.BOARD_HEIGHT
+                        ):
                     l.append((w - ite, h + ite))
             rdiags.append(r)
             ldiags.append(l)
         ldiags = [
-            tuple(self.state[h * self.BOARD_WIDTH + w] for (w, h) in l) for l in ldiags
-        ]
+                tuple(self.state[h * self.BOARD_WIDTH + w] for (w, h) in l) for l in ldiags
+                ]
         rdiags = [
-            tuple(self.state[h * self.BOARD_WIDTH + w] for (w, h) in r) for r in rdiags
-        ]
+                tuple(self.state[h * self.BOARD_WIDTH + w] for (w, h) in r) for r in rdiags
+                ]
 
         cols = [
-            tuple(self.state[h :: self.BOARD_WIDTH]) for h in range(self.BOARD_HEIGHT)
-        ]
+                tuple(self.state[h :: self.BOARD_WIDTH]) for h in range(self.BOARD_HEIGHT)
+                ]
         rows = [
-            tuple(self.state[h * self.BOARD_WIDTH : (h + 1) * self.BOARD_WIDTH :])
-            for h in range(self.BOARD_HEIGHT)
-        ]
+                tuple(self.state[h * self.BOARD_WIDTH : (h + 1) * self.BOARD_WIDTH :])
+                for h in range(self.BOARD_HEIGHT)
+                ]
 
         return [*ldiags, *rdiags, *cols, *rows]
 
@@ -76,10 +71,10 @@ class Board:
 
     def __repr__(self):
         o = [
-            str([self.state[h * self.BOARD_WIDTH + w] for w in range(self.BOARD_WIDTH)])
-            + "\n"
-            for h in range(self.BOARD_HEIGHT)
-        ]
+                str([self.state[h * self.BOARD_WIDTH + w] for w in range(self.BOARD_WIDTH)])
+                + "\n"
+                for h in range(self.BOARD_HEIGHT)
+                ]
         return "".join(o)
 
     def __str__(self):
@@ -130,14 +125,20 @@ class LearningAI(AIBase):
 
 
 class Game:
+
+    N_PLAYER = 2
+    AI_PLAYER = 0
+
+
     @property
     def next_player(self):
         return self.board.GAME_SYMBOLS[self.turns % self.nplayers]
 
-    def __init__(self, nplayers: int = 2):
+    def __init__(self, nplayers: int = 2, aplayers: int = 0):
         self.board = Board()
         self.turns = 0
         self.nplayers = nplayers
+        self.aplayers = aplayers
 
     def turn(self, *pos) -> None | str:
         p = self.next_player
@@ -145,7 +146,8 @@ class Game:
         if o:
             return f"Player {o} won!"
         elif self.turns >= self.board.BOARD_LENGTH:
-            return f"Draw, none of the {self.nplayers} player(s) won!"
+            return (f"Draw, none of the {self.nplayers} player(s) and "
+                    f"none of the {self.aplayers} AI(s) won!")
         self.turns += 1
 
 
